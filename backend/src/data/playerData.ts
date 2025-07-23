@@ -17,14 +17,14 @@ interface Player {
     secondaryPositions: string[]
 }
 
-// Create Team
+// Create Player
 async function createPlayer(data: Player): Promise<ObjectId> {
     const collection = await getCollection("players");
     const result = await collection.insertOne(data)
     return result.insertedId
 }
 
-// Read Team 
+// Read Player 
 async function readPlayer(id: string): Promise<Player | null> {
     const collection = await getCollection("players");
     const objectId = new ObjectId(id)
@@ -32,7 +32,7 @@ async function readPlayer(id: string): Promise<Player | null> {
     return result;
 }
 
-// Update Team
+// Update Player
 async function updatePlayer(id: string, update: Partial<Player>): Promise<boolean> {
     const collection = await getCollection("players");
     const objectId = new ObjectId(id);
@@ -41,7 +41,7 @@ async function updatePlayer(id: string, update: Partial<Player>): Promise<boolea
     return result.modifiedCount > 0
 }
 
-// Delete Team
+// Delete Player
 async function deletePlayer(id: string): Promise<void> {
     const collection = await getCollection("players");
     const objectId = new ObjectId(id);
