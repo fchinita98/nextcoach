@@ -1,6 +1,6 @@
-import { ObjectId, Collection } from 'mongodb';
+import { ObjectId } from 'mongodb';
 import { createTeam, readTeam, readTeamByClubAndCategory, updateTeam, deleteTeam, Team } from '../data/teamData'
-import { getCollection } from '../config/mongodb';
+import { normalizeText } from '../utils/normalize'
 
 async function newTeam(data: Team): Promise<ObjectId> {
     // verificação de dados obrigatórios
@@ -8,18 +8,17 @@ async function newTeam(data: Team): Promise<ObjectId> {
         throw new Error ("Missing mandatory fields.")
     }
     // verificação de dados normalizados se existe club com o mesmo nome
-    const clubName = data.club.trim()
-    const normalizedClub = clubName.toLowerCase()
+    const normalizedClub = normalizeText(data.club)
     const category = data.category
     const existingTeam = await readTeamByClubAndCategory(normalizedClub, category)
     // se existir lança erro
     if (existingTeam !== null) {
-        throw new Error (`Club ${clubName} with Category ${data.category} already exists`)
+        throw new Error (`Club ${data.club} with Category ${data.category} already exists`)
     }
     // valores de club e normalizedClub adicionados
     const newTeamData = {
         ...data,
-        club: clubName,
+        club: data.club.trim(),
         normalizedClub: normalizedClub
     }
     // criar equipa e retorna ID
