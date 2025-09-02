@@ -7,15 +7,22 @@ import { Player } from './playerData';
 
 interface Match {
     _id?: ObjectId,
+    teamId: ObjectId,
+    opponent: string,
     type: string,
-    game: number | null,
+    game: number | string | null,
     date: Date,
     place: string,
     schedule: string,
-    callUpList: Player[],
-    lineup: Player[],
-    substitutes: Player[]
-}
+    callUpList: ObjectId[],
+    lineup: ObjectId[],
+    substitutes: ObjectId[],
+    isFinished: boolean,
+    result: {
+        home: number | null,
+        away: number | null
+    }
+}   
 
 // Create Match
 async function createMatch(data: Match): Promise<ObjectId> {

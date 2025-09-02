@@ -8,7 +8,9 @@ import { Player } from './playerData';
 interface Team {
     _id?: ObjectId,
     club: string,
-    teamLevel: string,
+    clubSlug?: string,
+    category: string,
+    logo?: HTMLImageElement,
     fut: number,
     staff?: { [key: string]: string },
     players?: Player[],

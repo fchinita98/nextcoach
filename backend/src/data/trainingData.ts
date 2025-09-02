@@ -6,11 +6,14 @@ import {getConnection, closeConnection, getCollection} from '../config/mongodb'
 
 interface Training {
     _id?: ObjectId,
-    ut: number,
+    team: ObjectId,
+    trainingNumber: number,
     date: Date,
     theme: string,
     place: string,
-    schedule: string
+    schedule: string,
+    attendance: ObjectId[],
+    notes?: string
 }
 
 // Create Training
