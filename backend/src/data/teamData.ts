@@ -8,7 +8,7 @@ import { Player } from './playerData';
 interface Team {
     _id?: ObjectId,
     club: string,
-    clubSlug?: string,
+    normalizedClub?: string,
     category: string,
     logo?: HTMLImageElement,
     fut: number,
@@ -31,6 +31,13 @@ async function readTeam(id: string): Promise<Team | null> {
     return result;
 }
 
+// Read Team by Normalized Club
+async function readTeamByClubAndCategory(normalizedClub: string, category: string): Promise<Team | null> {
+    const collection = await getCollection("teams");
+    const result = await collection.findOne<Team>({ normalizedClub, category });
+    return result;
+}
+
 // Update Team
 async function updateTeam(id: string, update: Partial<Team>): Promise<boolean> {
     const collection = await getCollection("teams");
@@ -47,4 +54,4 @@ async function deleteTeam(id: string): Promise<void> {
     await collection.deleteOne({_id: objectId})
 }
 
-export { createTeam, readTeam, updateTeam, deleteTeam, Team }
+export { createTeam, readTeam, readTeamByClubAndCategory, updateTeam, deleteTeam, Team }

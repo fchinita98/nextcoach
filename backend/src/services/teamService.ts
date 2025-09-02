@@ -1,26 +1,26 @@
 import { ObjectId, Collection } from 'mongodb';
-import { createTeam, readTeam, updateTeam, deleteTeam, Team } from '../data/teamData'
+import { createTeam, readTeam, readTeamByClubAndCategory, updateTeam, deleteTeam, Team } from '../data/teamData'
 import { getCollection } from '../config/mongodb';
 
 async function newTeam(data: Team): Promise<ObjectId> {
-    const collection = await getCollection("teams");
     // verificação de dados obrigatórios
     if (!data.club || !data.category || typeof data.fut !== "number") {
         throw new Error ("Missing mandatory fields.")
     }
     // verificação de dados normalizados se existe club com o mesmo nome
     const clubName = data.club.trim()
-    const clubSlug = clubName.toLowerCase()
-    const existingTeams = await collection.find({clubSlug: clubSlug, category: data.category}).toArray();
+    const normalizedClub = clubName.toLowerCase()
+    const category = data.category
+    const existingTeam = await readTeamByClubAndCategory(normalizedClub, category)
     // se existir lança erro
-    if (existingTeams.length > 0) {
+    if (existingTeam !== null) {
         throw new Error (`Club ${clubName} with Category ${data.category} already exists`)
     }
-    // valores de club e clubSlug adicionados
+    // valores de club e normalizedClub adicionados
     const newTeamData = {
         ...data,
         club: clubName,
-        clubSlug: clubSlug
+        normalizedClub: normalizedClub
     }
     // criar equipa e retorna ID
     return await createTeam(newTeamData)
@@ -39,11 +39,11 @@ async function editTeam(id: string, update: Partial<Team>): Promise<boolean> {
     if (!team) {
         throw new Error("Team not found");
     }
-    // se o campo atualizado for o Club, atualizar o clubSlug
+    // se o campo atualizado for o Club, atualizar o normalizedClub
     if (update.club) {
         const clubName = update.club.trim();
         update.club = clubName;
-        update.clubSlug = clubName.toLowerCase();
+        update.normalizedClub = clubName.toLowerCase();
     }
 
     return await updateTeam(id, update)
