@@ -5,7 +5,7 @@ import { normalizeText } from '../utils/normalize'
 async function newTeam(data: Team): Promise<ObjectId> {
     // verificação de dados obrigatórios
     if (!data.club || !data.category || typeof data.fut !== "number") {
-        throw new Error ("Missing mandatory fields.")
+        throw new Error ("Mandatory fields required.")
     }
     // verificação de dados normalizados se existe club com o mesmo nome
     const normalizedClub = normalizeText(data.club)
@@ -41,8 +41,7 @@ async function editTeam(id: string, update: Partial<Team>): Promise<boolean> {
     // se o campo atualizado for o Club, atualizar o normalizedClub
     if (update.club) {
         const clubName = update.club.trim();
-        update.club = clubName;
-        update.normalizedClub = clubName.toLowerCase();
+        update.normalizedClub = normalizeText(clubName);
     }
 
     return await updateTeam(id, update)

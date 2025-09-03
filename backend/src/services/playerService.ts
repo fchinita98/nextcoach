@@ -4,13 +4,17 @@ import { getCollection } from '../config/mongodb';
 
 async function newPlayer (data: Player): Promise<ObjectId> {
     // Validar campos preenchidos
-    if (!data.team || !data.firstName || !data.lastName || !data.mainPosition) {
+    if (!data.teamId || !data.firstName || !data.lastName || !data.mainPosition) {
         throw new Error ("Mandatory fields required.")
     }
     return await createPlayer(data)
 }
 
 async function findPlayer (id: string): Promise<Player | null> {
+    const player = await readPlayer(id);
+    if (!player) {
+        throw new Error ("Player not found.")
+    }
     return await readPlayer(id)
 }
 
@@ -22,7 +26,7 @@ async function editPlayer (id: string, update: Partial<Player>): Promise<boolean
     const merged = { ...existingPlayer, ...update }
 
     // Validar campos obrigatórios continuam preenchidos
-    if (!merged.team || !merged.firstName || !merged.lastName || !merged.mainPosition) {
+    if (!merged.teamId || !merged.firstName || !merged.lastName || !merged.mainPosition) {
         throw new Error ("Mandatory fields required.")
     }
     return await updatePlayer (id, update)

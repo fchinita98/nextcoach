@@ -14,6 +14,10 @@ async function newMatch (data: Match): Promise<ObjectId> {
 };
 
 async function findMatch (id: string): Promise<Match | null> {
+    const match = await readMatch(id);
+    if (!match) {
+        throw new Error ("Match not found.")
+    }
     return await readMatch(id)
 }
 

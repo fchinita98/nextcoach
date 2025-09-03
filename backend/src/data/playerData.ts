@@ -6,7 +6,7 @@ import {getConnection, closeConnection, getCollection} from '../config/mongodb'
 
 interface Player {
     _id?: ObjectId,
-    team: ObjectId,
+    teamId: ObjectId,
     firstName: string,
     lastName: string,
     birthDate: Date,

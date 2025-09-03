@@ -6,7 +6,7 @@ import {getConnection, closeConnection, getCollection} from '../config/mongodb'
 
 interface Training {
     _id?: ObjectId,
-    team: ObjectId,
+    teamId: ObjectId,
     trainingNumber: number,
     date: Date,
     theme: string,
