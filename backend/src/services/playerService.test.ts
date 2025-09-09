@@ -13,13 +13,13 @@ test('Throws error if mandatory fields are missing', async () => {
 
     await expect(newPlayer(missingData as any)).rejects.toThrow("Mandatory fields required.")
 });
-/*
+
 // Test findPlayer if found
 test('Returns player if found', async () => {
-    const mockPlayer = { club: "AC Malveira", category: "U19", fut: 11 };
+    const mockPlayer = { teamId: 'teamId123', firstName: "Guilherme", lastName: "Santos", mainPosition: "Center-back" };
     (playerData.readPlayer as jest.Mock).mockResolvedValue(mockPlayer);
 
-    const result = await findPlayer('id123');
+    const result = await findPlayer('playerId456');
     expect(result).toBe(mockPlayer)
 });
 
@@ -27,22 +27,22 @@ test('Returns player if found', async () => {
 test('Throws error if not found', async () => {
     (playerData.readPlayer as jest.Mock).mockResolvedValue(null);
 
-    await expect(findPlayer('id123-missing')).rejects.toThrow('Player not found');
+    await expect(findPlayer('id123-missing')).rejects.toThrow('Player not found.');
 })
 
 // Test editPlayer if updated --> True
 test('Returns true when Player is updated with new fields', async () => {
-    const mockPlayer = { club: "AC Malveira", category: "U19", fut: 9 };
+    const mockPlayer = { teamId: 'teamId123', firstName: "Guilherme", lastName: "Santos", mainPosition: "Center-back" };
     (playerData.readPlayer as jest.Mock).mockResolvedValue(mockPlayer);
     (playerData.updatePlayer as jest.Mock).mockResolvedValue(true);
 
-    const input = await editPlayer('id123', {fut: 11});
+    const input = await editPlayer('id123', {mainPosition: "Striker"});
     expect(input).toBe(true)
 })
 
 // Test removePlayer --> void
 test('removes Player when it exists', async () => {
-  const mockPlayer = { club: "AC Malveira", category: "U19", fut: 9 };
+  const mockPlayer = { teamId: 'teamId123', firstName: "Guilherme", lastName: "Santos", mainPosition: "Center-back" };
 
   (playerData.readPlayer as jest.Mock).mockResolvedValue(mockPlayer);
   (playerData.deletePlayer as jest.Mock).mockResolvedValue(undefined);
@@ -50,4 +50,3 @@ test('removes Player when it exists', async () => {
   await expect(removePlayer('id123')).resolves.toBeUndefined();
   expect(playerData.deletePlayer).toHaveBeenCalledWith('id123');
 });
-*/
