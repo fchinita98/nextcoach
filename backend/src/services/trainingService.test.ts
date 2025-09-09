@@ -7,8 +7,8 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
-// Test all matches by team
-test('Returns all matches for a team', async () => {
+// Test all trainings by team
+test('Returns all trainings for a team', async () => {
   const mockTrainings = [{ id: '1' }, { id: '2' }];
   (trainingData.readAllTrainingsByTeam as jest.Mock).mockResolvedValue(mockTrainings);
 
