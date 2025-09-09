@@ -1,10 +1,19 @@
-import { editTraining, findTraining, newTraining, removeTraining } from './trainingService';
+import { editTraining, findTraining, findAllTrainingsByTeam, newTraining, removeTraining } from './trainingService';
 import * as trainingData from '../data/trainingData';
 jest.mock('../data/trainingData');
 
 // Clean mocks after tests
 afterEach(() => {
   jest.clearAllMocks();
+});
+
+// Test all matches by team
+test('Returns all matches for a team', async () => {
+  const mockTrainings = [{ id: '1' }, { id: '2' }];
+  (trainingData.readAllTrainingsByTeam as jest.Mock).mockResolvedValue(mockTrainings);
+
+  const result = await findAllTrainingsByTeam('team123');
+  expect(result).toEqual(mockTrainings);
 });
 
 // Test newTraining

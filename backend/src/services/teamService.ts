@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb';
-import { createTeam, readTeam, readTeamByClubAndCategory, updateTeam, deleteTeam, Team } from '../data/teamData'
+import { createTeam, readTeam, readAllTeams, readTeamByClubAndCategory, updateTeam, deleteTeam, Team } from '../data/teamData'
 import { normalizeText } from '../utils/normalize'
 
 async function newTeam(data: Team): Promise<ObjectId> {
@@ -33,6 +33,16 @@ async function findTeam(id: string): Promise<Team | null> {
     return team;
 }
 
+async function findAllTeams(): Promise<Team[]> {
+    const teams = await readAllTeams();
+    if (!teams) {
+        throw new Error ("Teams not found.")
+    }
+    // retorna lista ordenada alfabeticamente
+    return teams.sort((a, b) => a.club.localeCompare(b.club));
+}
+
+
 async function editTeam(id: string, update: Partial<Team>): Promise<boolean> {
     const team = await readTeam(id);
     if (!team) {
@@ -55,5 +65,5 @@ async function removeTeam(id: string): Promise<void> {
     return await deleteTeam(id)
 }
 
-export { newTeam, findTeam, editTeam, removeTeam }
+export { newTeam, findTeam, findAllTeams, editTeam, removeTeam }
 

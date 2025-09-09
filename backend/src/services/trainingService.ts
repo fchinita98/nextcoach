@@ -1,5 +1,5 @@
 import { ObjectId} from 'mongodb';
-import { createTraining, readTraining, updateTraining, deleteTraining, Training } from '../data/trainingData'
+import { createTraining, readTraining, readAllTrainingsByTeam, updateTraining, deleteTraining, Training } from '../data/trainingData'
 
 async function newTraining (data: Training): Promise<ObjectId> {
     // Validar campos obrigatórios
@@ -9,12 +9,20 @@ async function newTraining (data: Training): Promise<ObjectId> {
     return await createTraining(data)
 }
 
-async function findTraining (id: string): Promise<Training | null> {
+async function findTraining (id: string): Promise<Training> {
     const training = await readTraining(id);
     if (!training) {
         throw new Error ("Training not found.")
     }
-    return await readTraining (id)
+    return training;
+}
+
+async function findAllTrainingsByTeam(teamId: string): Promise<Training[]> {
+    const trainings = await readAllTrainingsByTeam(teamId);
+    if (!trainings) {
+        throw new Error ("Trainings not found.")
+    }
+    return trainings || [];
 }
 
 async function editTraining(id: string, update: Partial<Training>): Promise<boolean> {
@@ -39,4 +47,4 @@ async function removeTraining (id: string): Promise<void> {
     return await deleteTraining(id)
 }
 
-export { newTraining, findTraining, editTraining, removeTraining }
+export { newTraining, findTraining, findAllTrainingsByTeam, editTraining, removeTraining }

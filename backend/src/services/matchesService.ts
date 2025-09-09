@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb';
-import { createMatch, readMatch, updateMatch, deleteMatch, Match } from '../data/matchesData'
+import { createMatch, readMatch, readAllMatchesByTeam, updateMatch, deleteMatch, Match } from '../data/matchesData'
 
 async function newMatch (data: Match): Promise<ObjectId> {
     // Validar campos obrigatórios
@@ -13,12 +13,20 @@ async function newMatch (data: Match): Promise<ObjectId> {
     return await createMatch(matchData)
 };
 
-async function findMatch (id: string): Promise<Match | null> {
+async function findMatch (id: string): Promise<Match> {
     const match = await readMatch(id);
     if (!match) {
         throw new Error ("Match not found.")
     }
-    return await readMatch(id)
+    return match;
+}
+
+async function findAllMatchesByTeam(teamId: string): Promise<Match[]> {
+    const matches = await readAllMatchesByTeam(teamId);
+    if (!matches) {
+        throw new Error ("Matches not found.")
+    }
+    return matches || [];
 }
 
 async function editMatch (id: string, update: Partial<Match>): Promise<boolean> {
@@ -45,4 +53,4 @@ async function removeMatch (id: string): Promise<void> {
     return await deleteMatch(id)
 }
 
-export { newMatch, findMatch, editMatch, removeMatch }
+export { newMatch, findMatch, findAllMatchesByTeam, editMatch, removeMatch }

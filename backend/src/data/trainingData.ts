@@ -31,6 +31,14 @@ async function readTraining(id: string): Promise<Training | null> {
     return result;
 }
 
+// Read All Trainings From Team
+async function readAllTrainingsByTeam(teamId: string): Promise<Training[]> {
+    const collection = await getCollection("trainings");
+    const objectId = new ObjectId(teamId);
+    const result = await collection.find<Training>({ teamId: objectId }).toArray();
+    return result;
+}
+
 // Update Training
 async function updateTraining(id: string, update: Partial<Training>): Promise<boolean> {
     const collection = await getCollection("trainings");
@@ -47,4 +55,4 @@ async function deleteTraining(id: string): Promise<void> {
     await collection.deleteOne({_id: objectId})
 }
 
-export { createTraining, readTraining, updateTraining, deleteTraining, Training };
+export { createTraining, readTraining, readAllTrainingsByTeam, updateTraining, deleteTraining, Training };

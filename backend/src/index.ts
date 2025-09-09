@@ -18,10 +18,10 @@ app.use(express.json());
 app.use(cors());
 
 // use routes endpoints to app
-app.use('/matches', matchesRoutes);
-app.use('/player', playerRoutes);
-app.use('/team', teamRoutes);
-app.use('/training', trainingRoutes)
+app.use('/teams', matchesRoutes);
+app.use('/teams', playerRoutes);
+app.use('/teams', teamRoutes);
+app.use('/teams', trainingRoutes)
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Server running with TypeScript!');

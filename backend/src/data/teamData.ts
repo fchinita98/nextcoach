@@ -31,6 +31,13 @@ async function readTeam(id: string): Promise<Team | null> {
     return result;
 }
 
+// Read All Teams
+async function readAllTeams(): Promise<Team[]> {
+  const collection = await getCollection("teams");
+  const teams = await collection.find<Team>({}).toArray();
+  return teams;
+}
+
 // Read Team by Normalized Club
 async function readTeamByClubAndCategory(normalizedClub: string, category: string): Promise<Team | null> {
     const collection = await getCollection("teams");
@@ -54,4 +61,4 @@ async function deleteTeam(id: string): Promise<void> {
     await collection.deleteOne({_id: objectId})
 }
 
-export { createTeam, readTeam, readTeamByClubAndCategory, updateTeam, deleteTeam, Team }
+export { createTeam, readTeam, readAllTeams, readTeamByClubAndCategory, updateTeam, deleteTeam, Team }

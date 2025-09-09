@@ -1,10 +1,19 @@
-import { editMatch, findMatch, newMatch, removeMatch } from './matchesService';
+import { editMatch, findMatch, findAllMatchesByTeam, newMatch, removeMatch } from './matchesService';
 import * as matchesData from '../data/matchesData';
 jest.mock('../data/matchesData');
 
 // Clean mocks after tests
 afterEach(() => {
   jest.clearAllMocks();
+});
+
+// Test all matches by team
+test('Returns all matches for a team', async () => {
+  const mockMatches = [{ id: '1' }, { id: '2' }];
+  (matchesData.readAllMatchesByTeam as jest.Mock).mockResolvedValue(mockMatches);
+
+  const result = await findAllMatchesByTeam('team123');
+  expect(result).toEqual(mockMatches);
 });
 
 // Test newMatch

@@ -1,10 +1,19 @@
-import { editPlayer, findPlayer, newPlayer, removePlayer } from './playerService';
+import { editPlayer, findPlayer, findAllPlayersByTeam, newPlayer, removePlayer } from './playerService';
 import * as playerData from '../data/playerData';
 jest.mock('../data/playerData');
 
 // Clean mocks after tests
 afterEach(() => {
   jest.clearAllMocks();
+});
+
+// Test all players by team
+test('Returns all players for a team', async () => {
+  const mockPlayers = [{ id: '1' }, { id: '2' }];
+  (playerData.readAllPlayersByTeam as jest.Mock).mockResolvedValue(mockPlayers);
+
+  const result = await findAllPlayersByTeam('team123');
+  expect(result).toEqual(mockPlayers);
 });
 
 // Test newPlayer

@@ -1,6 +1,5 @@
 import { ObjectId } from 'mongodb';
-import { createPlayer, readPlayer, updatePlayer, deletePlayer, Player } from '../data/playerData'
-import { getCollection } from '../config/mongodb';
+import { createPlayer, readPlayer, readAllPlayersByTeam, updatePlayer, deletePlayer, Player } from '../data/playerData'
 
 async function newPlayer (data: Player): Promise<ObjectId> {
     // Validar campos preenchidos
@@ -10,12 +9,20 @@ async function newPlayer (data: Player): Promise<ObjectId> {
     return await createPlayer(data)
 }
 
-async function findPlayer (id: string): Promise<Player | null> {
+async function findPlayer (id: string): Promise<Player> {
     const player = await readPlayer(id);
     if (!player) {
         throw new Error ("Player not found.")
     }
-    return await readPlayer(id)
+    return player;
+}
+
+async function findAllPlayersByTeam(teamId: string): Promise<Player[]> {
+    const players = await readAllPlayersByTeam(teamId);
+    if (!players) {
+        throw new Error ("Players not found.")
+    }
+    return players || [];
 }
 
 async function editPlayer (id: string, update: Partial<Player>): Promise<boolean> {
@@ -40,4 +47,4 @@ async function removePlayer (id: string): Promise<void> {
     return await deletePlayer (id)
 }
 
-export { newPlayer, findPlayer, editPlayer, removePlayer }
+export { newPlayer, findPlayer, findAllPlayersByTeam, editPlayer, removePlayer }

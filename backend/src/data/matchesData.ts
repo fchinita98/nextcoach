@@ -39,6 +39,14 @@ async function readMatch(id: string): Promise<Match | null> {
     return result;
 }
 
+// Read All Matches From Team
+async function readAllMatchesByTeam(teamId: string): Promise<Match[]> {
+    const collection = await getCollection("matches");
+    const objectId = new ObjectId(teamId);
+    const result = await collection.find<Match>({ teamId: objectId }).toArray();
+    return result;
+}
+
 // Update Match
 async function updateMatch(id: string, update: Partial<Match>): Promise<boolean> {
     const collection = await getCollection("matches");
@@ -55,4 +63,4 @@ async function deleteMatch(id: string): Promise<void> {
     await collection.deleteOne({_id: objectId})
 }
 
-export { createMatch, readMatch, updateMatch, deleteMatch, Match };
+export { createMatch, readMatch, readAllMatchesByTeam, updateMatch, deleteMatch, Match };
